@@ -7,7 +7,7 @@ IMPORTS
 """
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.optimize.curve_fit as curve_fit
+import scipy as sc
 
 plt.rc('text', usetex = True)
 plt.rc('font', family = 'serif')
@@ -117,12 +117,76 @@ plt.show()
 mu_binned = np.linspace(0, 1, 20) # Binned mu values for plotting
 intensity_mu = intensity(mu_list) # Intensity
 
+numerical_params, numerical_cov = sc.optimize.curve_fit(lambda x, m, b: m * x + b, mu_binned, intensity_mu / intensity_mu[-1])
+
 "Plotting The Analytical vs. Numerical Intensity Ratio"
 plt.figure()
 
 # Plotting the analytical vs. numerical intensity ratio
-plt.plot(mu_binned, intensity_mu / intensity_mu[-1], ls = 'o', color = 'Teal', label = "Numerical $I(\mu) / I(1)$")
-plt.plot(mu_binned, (0.4 + 0.6 * mu_binned), ls = 'o', color = 'Coral', label = "Analytical $I(\mu) / I(1)$")
+plt.scatter(mu_binned, intensity_mu / intensity_mu[-1], color = 'Teal', label = "Numerical $I(\mu) / I(1)$")
+plt.scatter(mu_binned, (0.4 + 0.6 * mu_binned), color = 'Purple', label = "Analytical $I(\mu) / I(1)$")
+plt.plot(mu_binned, numerical_params[0] * mu_binned + numerical_params[1], color = 'Coral', linestyle = '--', label = f"Numerical Fit: $I(\mu) / I(1) = ({numerical_params[0]:.2f})\mu + ({numerical_params[1]:.2f})$")
+
+# Labels
+plt.title("The Analytical vs. Numerical Intensity Ratio", fontsize = 12)
+plt.xlabel("$\mu$", fontsize = 12)
+plt.ylabel("$I(\mu) / I(1)$", fontsize = 12)
+
+plt.legend(fontsize = 12)
+plt.grid()
+
+# Limits
+plt.xlim([0, 1])
+plt.ylim([0, 1.1])
+
+plt.savefig('Figures\\The_Analytical_vs._Numerical_Intensity_Ratio.pdf')
+plt.show()
+
+"""
+PART C)
+"""
+"Constants"
+N = 1e5 # Number of photons to simulate
+TAU_MAX = 1e-4 # Maximum optical depth of the atmosphere
+
+"Simulating N Photons Scattering"
+mu_list = np.array([], dtype = float)
+
+for i in range(int(N)):
+    steps, mu = random_walk(TAU_MAX)
+    mu_list = np.append(mu_list, mu)
+
+"Plotting Photons Escaping With Respective Directional Cosine"
+plt.figure()
+
+# Plotting photons escaping with respective directional cosine
+plt.hist(mu_list, bins = 20, color = 'Teal')
+
+# Labels
+plt.title("Photons Escaping With Respective Directional Cosine Distribution", fontsize = 12)
+plt.xlabel("$\mu$", fontsize = 12)
+plt.ylabel("$N(\mu)$", fontsize = 12)
+
+plt.grid()
+
+# Limits
+plt.xlim([0, 1])
+
+plt.savefig('Figures\\Photons_Escaping_With_Respective_Directional_Cosine_Distribution.pdf')
+plt.show()
+
+mu_binned = np.linspace(0, 1, 20) # Binned mu values for plotting
+intensity_mu = intensity(mu_list) # Intensity
+
+numerical_params, numerical_cov = sc.optimize.curve_fit(lambda x, m, b: m * x + b, mu_binned, intensity_mu / intensity_mu[-1])
+
+"Plotting The Analytical vs. Numerical Intensity Ratio"
+plt.figure()
+
+# Plotting the analytical vs. numerical intensity ratio
+plt.scatter(mu_binned, intensity_mu / intensity_mu[-1], color = 'Teal', label = "Numerical $I(\mu) / I(1)$")
+plt.scatter(mu_binned, (0.4 + 0.6 * mu_binned), color = 'Purple', label = "Analytical $I(\mu) / I(1)$")
+plt.plot(mu_binned, numerical_params[0] * mu_binned + numerical_params[1], color = 'Coral', linestyle = '--', label = f"Numerical Fit: $I(\mu) / I(1) = ({numerical_params[0]:.2f})\mu + ({numerical_params[1]:.2f})$")
 
 # Labels
 plt.title("The Analytical vs. Numerical Intensity Ratio", fontsize = 12)
