@@ -1,6 +1,9 @@
 __authors__ = "Zachary Klouchnikov and Hannah Semple"
 
-# HEADER
+# The following code simulates the random walk of photons through a stellar
+# atmosphere with different maximum optical depths (tau_max). It calculates the
+# directional cosines of escaping photons and compares the numerical intensity
+# ratio I(mu)/I(1) with the analytical solution.
 
 """
 IMPORTS
@@ -95,14 +98,14 @@ for i in range(int(N)):
     steps, mu = random_walk(TAU_MAX)
     mu_list = np.append(mu_list, mu)
 
-"Plotting Photons Escaping With Respective Directional Cosine"
+"Plotting Photons Escaping With Respective Directional Cosine With Tau_Max = 10"
 plt.figure()
 
-# Plotting photons escaping with respective directional cosine
+# Plotting photons escaping with respective directional cosine with tau_max = 10
 plt.hist(mu_list, bins = 20, color = 'Teal')
 
 # Labels
-plt.title("Photons Escaping With Respective Directional Cosine Distribution", fontsize = 12)
+plt.title("Photons Escaping With Respective Directional Cosine Distribution With $\\tau_{max} = 10$", fontsize = 12)
 plt.xlabel("$\mu$", fontsize = 12)
 plt.ylabel("$N(\mu)$", fontsize = 12)
 
@@ -111,24 +114,24 @@ plt.grid()
 # Limits
 plt.xlim([0, 1])
 
-plt.savefig('Figures\\Photons_Escaping_With_Respective_Directional_Cosine_Distribution.pdf')
+# plt.savefig('Figures\\Photons Escaping With Respective Directional Cosine Distribution With Tau_max = 10.pdf')
 plt.show()
 
 mu_binned = np.linspace(0, 1, 20) # Binned mu values for plotting
 intensity_mu = intensity(mu_list) # Intensity
 
-numerical_params, numerical_cov = sc.optimize.curve_fit(lambda x, m, b: m * x + b, mu_binned, intensity_mu / intensity_mu[-1])
+params, cov = sc.optimize.curve_fit(lambda x, m, b: m * x + b, mu_binned, intensity_mu / intensity_mu[-1])
 
-"Plotting The Analytical vs. Numerical Intensity Ratio"
+"Plotting The Analytical vs. Numerical Intensity Ratio With Tau_Max = 10"
 plt.figure()
 
-# Plotting the analytical vs. numerical intensity ratio
+# Plotting the analytical vs. numerical intensity ratio with tau_max = 10
 plt.scatter(mu_binned, intensity_mu / intensity_mu[-1], color = 'Teal', label = "Numerical $I(\mu) / I(1)$")
 plt.scatter(mu_binned, (0.4 + 0.6 * mu_binned), color = 'Purple', label = "Analytical $I(\mu) / I(1)$")
-plt.plot(mu_binned, numerical_params[0] * mu_binned + numerical_params[1], color = 'Coral', linestyle = '--', label = f"Numerical Fit: $I(\mu) / I(1) = ({numerical_params[0]:.2f})\mu + ({numerical_params[1]:.2f})$")
+plt.plot(mu_binned, params[0] * mu_binned + params[1], color = 'Coral', linestyle = '--', label = f"Linear Fit: $I(\mu) / I(1) = ({params[0]:.2f})\mu + ({params[1]:.2f})$")
 
 # Labels
-plt.title("The Analytical vs. Numerical Intensity Ratio", fontsize = 12)
+plt.title("The Analytical vs. Numerical Intensity Ratio With $\\tau_{max} = 10$", fontsize = 12)
 plt.xlabel("$\mu$", fontsize = 12)
 plt.ylabel("$I(\mu) / I(1)$", fontsize = 12)
 
@@ -139,7 +142,7 @@ plt.grid()
 plt.xlim([0, 1])
 plt.ylim([0, 1.1])
 
-plt.savefig('Figures\\The_Analytical_vs._Numerical_Intensity_Ratio.pdf')
+# plt.savefig('Figures\\The Analytical vs. Numerical Intensity Ratio With Tau Max = 10.pdf')
 plt.show()
 
 """
@@ -156,14 +159,14 @@ for i in range(int(N)):
     steps, mu = random_walk(TAU_MAX)
     mu_list = np.append(mu_list, mu)
 
-"Plotting Photons Escaping With Respective Directional Cosine"
+"Plotting Photons Escaping With Respective Directional Cosine With Tau_Max = 1e-4"
 plt.figure()
 
-# Plotting photons escaping with respective directional cosine
+# Plotting photons escaping with respective directional cosine with tau_max = 1e-4
 plt.hist(mu_list, bins = 20, color = 'Teal')
 
 # Labels
-plt.title("Photons Escaping With Respective Directional Cosine Distribution", fontsize = 12)
+plt.title("Photons Escaping With Respective Directional Cosine Distribution With $\\tau_{max} = 1e^{-4}$", fontsize = 12)
 plt.xlabel("$\mu$", fontsize = 12)
 plt.ylabel("$N(\mu)$", fontsize = 12)
 
@@ -172,24 +175,24 @@ plt.grid()
 # Limits
 plt.xlim([0, 1])
 
-plt.savefig('Figures\\Photons_Escaping_With_Respective_Directional_Cosine_Distribution.pdf')
+# plt.savefig('Figures\\Photons Escaping With Respective Directional Cosine Distribution With Tau Max = 1e-4.pdf')
 plt.show()
 
 mu_binned = np.linspace(0, 1, 20) # Binned mu values for plotting
 intensity_mu = intensity(mu_list) # Intensity
 
-numerical_params, numerical_cov = sc.optimize.curve_fit(lambda x, m, b: m * x + b, mu_binned, intensity_mu / intensity_mu[-1])
+params, cov = sc.optimize.curve_fit(lambda x, m, b: m * x + b, mu_binned, intensity_mu / intensity_mu[-1])
 
-"Plotting The Analytical vs. Numerical Intensity Ratio"
+"Plotting The Analytical vs. Numerical Intensity Ratio With Tau_Max = 1e-4"
 plt.figure()
 
-# Plotting the analytical vs. numerical intensity ratio
+# Plotting the analytical vs. numerical intensity ratio with tau_max = 1e-4
 plt.scatter(mu_binned, intensity_mu / intensity_mu[-1], color = 'Teal', label = "Numerical $I(\mu) / I(1)$")
 plt.scatter(mu_binned, (0.4 + 0.6 * mu_binned), color = 'Purple', label = "Analytical $I(\mu) / I(1)$")
-plt.plot(mu_binned, numerical_params[0] * mu_binned + numerical_params[1], color = 'Coral', linestyle = '--', label = f"Numerical Fit: $I(\mu) / I(1) = ({numerical_params[0]:.2f})\mu + ({numerical_params[1]:.2f})$")
+plt.plot(mu_binned, params[0] * mu_binned + params[1], color = 'Coral', linestyle = '--', label = f"Linear Fit: $I(\mu) / I(1) = ({params[0]:.2f})\mu + ({params[1]:.2f})$")
 
 # Labels
-plt.title("The Analytical vs. Numerical Intensity Ratio", fontsize = 12)
+plt.title("The Analytical vs. Numerical Intensity Ratio With $\\tau_{max} = 1e^{-4}$", fontsize = 12)
 plt.xlabel("$\mu$", fontsize = 12)
 plt.ylabel("$I(\mu) / I(1)$", fontsize = 12)
 
@@ -200,5 +203,5 @@ plt.grid()
 plt.xlim([0, 1])
 plt.ylim([0, 1.1])
 
-plt.savefig('Figures\\The_Analytical_vs._Numerical_Intensity_Ratio.pdf')
+# plt.savefig('Figures\\The Analytical vs. Numerical Intensity Ratio With Tau Max = 1e-4.pdf')
 plt.show()
