@@ -13,6 +13,12 @@ from scipy.interpolate import RegularGridInterpolator
 from math import acos
 from scipy.integrate import simpson as simp
 
+rng = np.random.default_rng()
+loaded = np.load('Earth.npz')
+data = loaded['data']
+lon_data = loaded['lon']  #east-west (can convert to theta)
+lat_data = loaded['lat']  #north-south (can convert to phi)
+
 
 """
 FUNCTIONS
@@ -45,16 +51,9 @@ def theta_to_lat(theta):
     lat = theta*180/pi - 90
     return lat
 
-
 """
 PART B
 """
-rng = np.random.default_rng()
-loaded = np.load('Earth.npz')
-data = loaded['data']
-lon_data = loaded['lon']  #east-west (can convert to theta)
-lat_data = loaded['lat']  #north-south (can convert to phi)
-
 N=5000
 thetas = []
 phis = []
