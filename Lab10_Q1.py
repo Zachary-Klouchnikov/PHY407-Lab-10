@@ -52,8 +52,8 @@ PART B
 rng = np.random.default_rng()
 loaded = np.load('Earth.npz')
 data = loaded['data']
-lon_data = loaded['lon']  #east-west (theta)
-lat_data = loaded['lat']  #north-south (phi)
+lon_data = loaded['lon']  #east-west (can convert to theta)
+lat_data = loaded['lat']  #north-south (can convert to phi)
 
 N=5000
 thetas = []
