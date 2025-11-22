@@ -49,6 +49,12 @@ def theta_to_lat(theta):
 """
 PART B
 """
+rng = np.random.default_rng()
+loaded = np.load('Earth.npz')
+data = loaded['data']
+lon_data = loaded['lon']  #east-west (theta)
+lat_data = loaded['lat']  #north-south (phi)
+
 N=5000
 thetas = []
 phis = []
